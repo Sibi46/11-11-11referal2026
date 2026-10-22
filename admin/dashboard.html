@@ -439,7 +439,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;fon
     </a>
   </nav>
   <div class="sb-bottom">
-    <a class="sb-logout" href="index.html">
+    <a class="sb-logout" href="index.html" onclick="sessionStorage.removeItem('111_admin_key')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out
     </a>
   </div>
@@ -1981,7 +1981,7 @@ async function viewReseller(id){
   document.getElementById('modal-profile').classList.add('open');
   // Fetch payout data
   try{
-    const res=await fetch('/api/reseller/admin-payouts/',{headers:{'X-Admin-Key':'evoxu-admin-2025'}});
+    const res=await fetch('/api/reseller/admin-payouts/',{headers:{'X-Admin-Key':sessionStorage.getItem('111_admin_key')}});
     if(res.ok){
       const data=await res.json();
       const rs=(data.resellers||[]).find(x=>x.id===id);
@@ -2059,7 +2059,7 @@ function switchRType(type){
 }
 const AVATAR_COLORS=['#be185d','#5b21b6','#7D2035','#065f46','#1d4ed8','#c2410c','#0f766e','#b45309'];
 const API='';
-const ADMIN_KEY='evoxu-admin-2025';
+const ADMIN_KEY=sessionStorage.getItem('111_admin_key');
 
 async function loadResellers(){
   try{
@@ -2589,7 +2589,7 @@ async function loadPayouts(){
   document.getElementById('next-payout-date').textContent=_nextPayoutDate();
   el.innerHTML='<div style="text-align:center;padding:3rem;color:var(--dim);font-size:.8rem">Loading…</div>';
   try{
-    const r=await fetch('/api/reseller/admin-payouts/',{headers:{'X-Admin-Key':'evoxu-admin-2025'}});
+    const r=await fetch('/api/reseller/admin-payouts/',{headers:{'X-Admin-Key':sessionStorage.getItem('111_admin_key')}});
     if(!r.ok)throw new Error(r.status);
     const data=await r.json();
     _payData=data.resellers||[];
@@ -2740,7 +2740,7 @@ async function submitPayout(){
   try{
     const r=await fetch(`/api/reseller/admin-payouts/${id}/pay/`,{
       method:'POST',
-      headers:{'X-Admin-Key':'evoxu-admin-2025'},
+      headers:{'X-Admin-Key':sessionStorage.getItem('111_admin_key')},
       body:fd
     });
     const data=await r.json();

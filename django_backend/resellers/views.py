@@ -475,11 +475,12 @@ class TrackScanView(APIView):
         return Response({'success': True, 'reseller': reseller.name, 'code': reseller.reseller_code})
 
 
-ADMIN_SECRET = 'evoxu-admin-2025'
+from decouple import config as env_config
+ADMIN_SECRET = env_config('ADMIN_SECRET_KEY', default='')
 
 
 def _check_admin(request):
-    return request.headers.get('X-Admin-Key') == ADMIN_SECRET
+    return bool(ADMIN_SECRET) and request.headers.get('X-Admin-Key') == ADMIN_SECRET
 
 
 class AdminListResellersView(APIView):
@@ -752,7 +753,7 @@ class AdminLoginView(APIView):
         username = request.data.get('username', '').strip()
         password = request.data.get('password', '')
         if username == admin_user and password == admin_pass:
-            return Response({'success': True})
+            return Response({'success': True, 'admin_key': ADMIN_SECRET})
         return Response({'error': 'Invalid credentials.'}, status=401)
 
 

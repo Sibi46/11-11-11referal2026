@@ -141,7 +141,7 @@ async function doLogin(e){
   try{
     const res=await fetch('/api/admin/login/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:un,password:pw})});
     btn.classList.remove('loading');btn.disabled=false;
-    if(res.ok){toast('✦','Welcome! Loading dashboard…');setTimeout(()=>{window.location.href='dashboard.html';},1200);}
+    if(res.ok){const data=await res.json();sessionStorage.setItem('111_admin_key',data.admin_key);toast('✦','Welcome! Loading dashboard…');setTimeout(()=>{window.location.href='dashboard.html';},1200);}
     else{document.getElementById('fg-user').classList.add('err');document.getElementById('e-user').textContent='Invalid credentials.';document.getElementById('fg-pass').classList.add('err');document.getElementById('e-pass').textContent='Incorrect password.';}
   }catch(_){
     btn.classList.remove('loading');btn.disabled=false;
