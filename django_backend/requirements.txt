@@ -6,3 +6,6 @@ PyMySQL==1.1.1
 qrcode==7.4.2
 Pillow>=11.1.0
 python-decouple==3.8
+
+cryptography>=43
+gunicorn>=23,<24
